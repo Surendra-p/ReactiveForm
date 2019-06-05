@@ -1,0 +1,120 @@
+<div class="jumbotron">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-6 offset-md-3">
+              <h3>Reactive Form Validation</h3>
+              <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+                  <div class="form-group">
+                      <label for="firstName">Name</label>
+                      <input type="text" #myInput class="form-control" name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && firstName.invalid }" required />
+                      <div *ngIf="f.submitted && firstName.invalid" class="invalid-feedback">
+                          <div *ngIf="firstName.errors.required">First Name is required</div>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label for="email">Email</label>
+                      <input type="text" #todo class="form-control" name="email" [(ngModel)]="model.email" #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" required email />
+                      <div *ngIf="f.submitted && email.invalid" class="invalid-feedback">
+                          <div *ngIf="email.errors.required">Email is required</div>
+                          <div *ngIf="email.errors.email">Email must be a valid email address</div>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label for="number">Date</label>
+                      <input type="date" #todo1 class="form-control" name="number" [(ngModel)]="model.number" #number="ngModel" [ngClass]="{ 'is-invalid': f.submitted && number.invalid }" required minlength="10" />
+                      <div *ngIf="f.submitted && number.invalid" class="invalid-feedback">
+                          <div *ngIf="number.errors.required">Date is required</div>
+                          <div *ngIf="number.errors.minlength">Date must be at least 10 characters</div>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      <label for="drink">Drink</label>
+                      <select class="form-control" #todo2 id="drink" style="height:36px;" name="status" [(ngModel)]="model.status" [ngClass]="{ 'is-invalid': f.submitted && status.invalid }" required>
+                        <option *ngFor="let pow of drinks" [value]="pow">{{pow}}</option>
+                      </select>
+                      <div *ngIf="f.submitted && status.invalid" class="invalid-feedback">
+                          <div *ngIf="status.errors.required">Select field is required</div>
+                      </div>
+                    </div>
+                  <div class="form-group">
+                      <button class="btn btn-primary">Register</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+      <div class="container" *ngIf="data.length>0">
+        <table class="table">
+          <thead>
+            <th>S No.</th>
+            <th>first Name</th>
+            <th>Email</th>
+            <th>Drink</th>
+            <th>Date</th>
+            <th>Edit</th>
+            </thead>
+          <tbody>
+            <tr *ngFor="let user of data index as i">
+              <td>{{i+1}}</td>
+              <td>{{user.firstName}}</td>
+              <td>{{user.email}}</td>
+              <td>{{user.status}}</td>
+              <td>{{user.number}}</td>
+              <td><button class="btn btn-warning" (click)="edit(user.id);showBtn=user.id" data-toggle="modal" data-target="#myModal">Edit</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog" *ngFor="let user of data">
+          <div *ngIf="showBtn===user.id">
+              <div class="modal-content">
+                  <form name="form" #f="ngForm" novalidate>
+                    <div class="form-group">
+                        <label for="firstName">Name</label>
+                        <input type="text" class="form-control"  name="firstName" [(ngModel)]="user.firstName" #firstName="ngModel" required />
+                        <div *ngIf="f.submitted && firstName.invalid" class="invalid-feedback">
+                            <div *ngIf="firstName.errors.required">Name is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="text" class="form-control" name="email" [(ngModel)]="user.email" #email="ngModel" required email />
+                        <div *ngIf="f.submitted && email.invalid" class="invalid-feedback">
+                            <div *ngIf="email.errors.required">Email is required</div>
+                            <div *ngIf="email.errors.email">Email must be a valid email address</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="number">Date</label>
+                        <input type="date" class="form-control" name="number" [(ngModel)]="user.number" #number="ngModel" required minlength="10" />
+                    </div>
+  
+                    <div class="form-group">
+                        <label for="drink">Drink</label>
+                        <select class="form-control" id="drink" style="height:36px;" name="status" [(ngModel)]="user.status" required>
+                          <option *ngFor="let pow of drinks" [value]="pow">{{pow}}</option>
+                        </select>
+                      </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="editForm(user)">Update</button>
+                    </div>
+                </form>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+          </div>
+          <!-- Modal content-->
+        </div>
+      </div>
+  </div>
+</div>
+
+
+  
+  
+
+
+
